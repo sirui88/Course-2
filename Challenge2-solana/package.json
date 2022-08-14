@@ -4,9 +4,17 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "node index.js"
+    "dev": "nodemon main.ts",
+    "lint": "eslint . --ext .ts --fix",
+    "build": "tsc",
+    "start": "node build/main.js"
   },
   "dependencies": {
-    "@solana/web3.js": "^1.53.0"
+    "@solana/web3.js": "^1.53.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.7.4"
+  },
+  "engines": {
+    "node": "18.x.x"
   }
 }

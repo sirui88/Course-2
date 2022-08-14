@@ -5,6 +5,7 @@ A transaction is either successful or not.
 
 Is it a spoiler that we are going to need `sendAndConfirmRawTransaction` cause we got an unused import hehe
 
+Ah nice block hashes explained :) was wondering that after challenge 1.
 
 
 
