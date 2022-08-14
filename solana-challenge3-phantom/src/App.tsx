@@ -26,28 +26,30 @@ interface ConnectOpts {
 
 // create a provider interface (hint: think of this as an object) to store the Phantom Provider
 interface PhantomProvider {
-  publicKey: PublicKey | null;
-  isConnected: boolean | null;
-  signTransaction: (transaction: Transaction) => Promise<Transaction>;
-  signAllTransactions: (transactions: Transaction[]) => Promise<Transaction[]>;
-  signMessage: (
+  publicKey?: PublicKey;
+  isConnected?: boolean;
+  signTransaction(transaction: Transaction): Promise<Transaction>;
+  signAllTransactions(transactions: Transaction[]): Promise<Transaction[]>;
+  signMessage(
     message: Uint8Array | string,
     display?: DisplayEncoding
-  ) => Promise<any>;
-  connect: (opts?: Partial<ConnectOpts>) => Promise<{ publicKey: PublicKey }>;
-  disconnect: () => Promise<void>;
-  on: (event: PhantomEvent, handler: (args: any) => void) => void;
-  request: (method: PhantomRequestMethod, params: any) => Promise<unknown>;
+  ): Promise<any>;
+  connect(opts?: Partial<ConnectOpts>): Promise<{ publicKey: PublicKey }>;
+  disconnect(): Promise<void>;
+  on(event: PhantomEvent, handler: (args: any) => void): void;
+  request(method: PhantomRequestMethod, params: any): Promise<unknown>;
 }
 
 /**
  * @description gets Phantom provider, if it exists
  */
-const getProvider = (): PhantomProvider | undefined => {
+function getProvider(): PhantomProvider | undefined {
   if ("solana" in window) {
     // @ts-ignore
     const provider = window.solana as any;
-    if (provider.isPhantom) return provider as PhantomProvider;
+    if (provider.isPhantom) {
+      return provider as PhantomProvider;
+    }
   }
 };
 
@@ -75,7 +77,7 @@ function App() {
    * @description prompts user to connect wallet if it exists.
    * This function is called when the connect wallet button is clicked
    */
-  const connectWallet = async () => {
+  async function connectWallet() {
     // @ts-ignore
     const { solana } = window;
 
@@ -84,14 +86,32 @@ function App() {
       try {
         // connects wallet and returns response which includes the wallet public key
         const response = await solana.connect();
-        console.log('wallet account ', response.publicKey.toString());
+        console.log(`wallet account ${response.publicKey.toString()}`);
         // update walletKey to be the public key
         setWalletKey(response.publicKey.toString());
       } catch (err) {
         // { code: 4001, message: 'User rejected the request.' }
       }
     }
-  };
+  }
+
+  async function disconnectWallet() {
+    // @ts-ignore
+    const { solana } = window;
+
+    // checks if phantom wallet exists
+    if (solana) {
+      try {
+        // connects wallet and returns response which includes the wallet public key
+        console.log(`disconnecting wallet account`);
+        await getProvider()?.disconnect();
+        // update walletKey to be the public key
+        setWalletKey(undefined);
+      } catch (err) {
+        // { code: 4001, message: 'User rejected the request.' }
+      }
+    }
+  }
 
   // HTML code for the app
   return (
@@ -112,8 +132,21 @@ function App() {
           Connect Wallet
         </button>
       )}
-      {provider && walletKey && <p>Connected account</p>}
-
+      {provider && walletKey && (
+        <button
+          style={{
+            fontSize: "16px",
+            padding: "15px",
+            fontWeight: "bold",
+            borderRadius: "5px",
+            marginLeft: "auto",
+            marginTop: "auto"
+          }}
+          onClick={disconnectWallet}
+        >
+          Disconnect Wallet
+        </button>
+      )}
       {!provider && (
         <p>
           No provider found. Install{" "}
