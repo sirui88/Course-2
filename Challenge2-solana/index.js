@@ -11,15 +11,24 @@ const {
   sendAndConfirmTransaction
 } = require("@solana/web3.js");
 
+// Create a new keypair
+const newPair = new Keypair();
+
+// Exact the public and private key from the keypair
+const publicKey = new PublicKey(newPair._keypair.publicKey).toString();
+const privateKey = newPair._keypair.secretKey;
+
+console.log(privateKey);
+
 // hipidi hopidi it is now my property
 const DEMO_FROM_SECRET_KEY = new Uint8Array(
   [
-    160, 20, 189, 212, 129, 188, 171, 124, 20, 179, 80,
-    27, 166, 17, 179, 198, 234, 36, 113, 87, 0, 46,
-    186, 250, 152, 137, 244, 15, 86, 127, 77, 97, 170,
-    44, 57, 126, 115, 253, 11, 60, 90, 36, 135, 177,
-    185, 231, 46, 155, 62, 164, 128, 225, 101, 79, 69,
-    101, 154, 24, 58, 214, 219, 238, 149, 86
+    250, 220, 228, 163, 155, 114, 77, 136, 234, 13, 204,
+    160, 245, 82, 150, 238, 107, 218, 1, 160, 59, 220,
+    132, 254, 148, 135, 109, 117, 236, 107, 75, 88, 232,
+    32, 122, 217, 14, 59, 91, 78, 16, 55, 242, 123,
+    10, 149, 221, 60, 197, 188, 92, 172, 177, 190, 81,
+    177, 36, 3, 226, 28, 112, 56, 239, 6
   ]
 );
 
