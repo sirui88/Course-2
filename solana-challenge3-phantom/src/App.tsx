@@ -139,8 +139,9 @@ function App() {
             padding: "15px",
             fontWeight: "bold",
             borderRadius: "5px",
-            marginLeft: "auto",
-            marginTop: "auto"
+            top: "0",
+            right: "0",
+            position: "absolute"
           }}
           onClick={disconnectWallet}
         >
