@@ -49,7 +49,23 @@ const airDropSol = async () => {
       new PublicKey(myWallet.publicKey),
       2 * LAMPORTS_PER_SOL
     );
-    await connection.confirmTransaction(fromAirDropSignature);
+
+    /**
+     * Method was deprewcated I used:
+     *
+     * https://stackoverflow.com/questions/72330340/solana-web3-confirmtransaction-deprecated-using-a-transactionconfirmationconfig
+     *
+     * This method seems more comples and raises questions on it's own.
+     * What I think it would do is prevent a deadlock maybe? where a transaction never appears but because the latest block hash may be updated
+     * by a different transaction we'd not continously wait? No clue
+     */
+    const latestBlockHash = await connection.getLatestBlockhash();
+
+    await connection.confirmTransaction({
+      blockhash: latestBlockHash,
+      lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
+      signature: fromAirDropSignature,
+    });
   } catch (err) {
     console.log(err);
   }
