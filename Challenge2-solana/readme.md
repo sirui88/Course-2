@@ -7,7 +7,10 @@ Is it a spoiler that we are going to need `sendAndConfirmRawTransaction` cause w
 
 Ah nice block hashes explained :) was wondering that after challenge 1.
 
-
+Question:
+`const connection = new Connection(clusterApiUrl("devnet"), "confirmed");`
+Is it standard to have a connection be like a Singleton and have it stay allive throughout the whole lifespan of an applciation.
+Or should we create a connection whenever we need a connection? For safety I've gone for the latter.
 
 
 Note to self remember:
