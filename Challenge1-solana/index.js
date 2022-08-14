@@ -58,8 +58,8 @@ const airDropSol = async () => {
 // Show the wallet balance before and after airdropping SOL
 const mainFunction = async () => {
   await getWalletBalance();
-  await airDropSol();
-  await getWalletBalance();
+  //await airDropSol();
+  //await getWalletBalance();
 }
 
 mainFunction();
