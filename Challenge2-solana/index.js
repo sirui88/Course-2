@@ -11,16 +11,6 @@ const {
   sendAndConfirmTransaction
 } = require("@solana/web3.js");
 
-// Create a new keypair
-const newPair = new Keypair();
-
-// Exact the public and private key from the keypair
-const publicKey = new PublicKey(newPair._keypair.publicKey).toString();
-const privateKey = newPair._keypair.secretKey;
-
-console.log(privateKey);
-
-// hipidi hopidi it is now my property
 const DEMO_FROM_SECRET_KEY = new Uint8Array(
   [
     250, 220, 228, 163, 155, 114, 77, 136, 234, 13, 204,
@@ -85,4 +75,4 @@ const transferSol = async () => {
   console.log('Signature is ', signature);
 }
 
-//transferSol();
+transferSol();
