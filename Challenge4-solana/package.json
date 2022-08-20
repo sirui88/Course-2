@@ -25,6 +25,7 @@
   "dependencies": {
     "@solana/web3.js": "^1.53.0",
     "borsh": "^0.7.0",
+    "dotenv": "^16.0.1",
     "mz": "^2.7.0",
     "yaml": "^2.0.0"
   },

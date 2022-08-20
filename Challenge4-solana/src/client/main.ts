@@ -1,6 +1,7 @@
 /**
  * Hello world
  */
+require('dotenv').config();
 
 import {
   establishConnection,
