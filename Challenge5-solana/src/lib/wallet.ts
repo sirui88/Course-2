@@ -1,6 +1,5 @@
-import { Keypair, PublicKey } from "@solana/web3.js";
+import { Keypair, PublicKey, sendAndConfirmTransaction, SystemProgram, Transaction } from "@solana/web3.js";
 import { getConnection } from "./connection";
-import { createPublicKeyFromSecret } from "./keyPairs";
 import { convertFromLamports, convertToLamports } from "./lamport";
 
 function getPublicKey(key: PublicKey | Keypair): PublicKey {
@@ -15,7 +14,7 @@ function getPublicKey(key: PublicKey | Keypair): PublicKey {
   }
 }
 
-export async function getSOLBalance(key: PublicKey | Keypair = createPublicKeyFromSecret()): Promise<number> {
+export async function getSOLBalance(key: PublicKey | Keypair): Promise<number> {
   const publicKey = getPublicKey(key);
   try {
     // Connect to the Devnet
@@ -33,11 +32,7 @@ export async function getSOLBalance(key: PublicKey | Keypair = createPublicKeyFr
   }
 }
 
-/**
- *
- * @param amount Only place where we expect number I guess
- */
-export async function airdropSOL(key: PublicKey | Keypair = createPublicKeyFromSecret(), amount: number = convertToLamports(2), inLamports = true) {
+export async function airdropSOL(key: PublicKey | Keypair, amount: number = convertToLamports(2), inLamports = true) {
   const publicKey = getPublicKey(key);
   if (!inLamports) {
     amount = convertToLamports(amount)
@@ -46,7 +41,6 @@ export async function airdropSOL(key: PublicKey | Keypair = createPublicKeyFromS
     throw new Error(`Can only airdrop between 0 and 2 SOL but tried to airdrop ${convertFromLamports(amount)} SOL`);
   }
   try {
-    // Connect to the Devnet
     const connection = getConnection();
 
     const fromAirDropSignature = await connection.requestAirdrop(
@@ -73,17 +67,35 @@ export async function airdropSOL(key: PublicKey | Keypair = createPublicKeyFromS
 }
 
 export async function transferSOL(from: Keypair, to: PublicKey | Keypair, amountInLamports: number) {
-  if (!from) {
+  if (!from || !from.publicKey) {
     throw new Error("From wallet was undefined")
   }
   const toPublickey = getPublicKey(to);
   if (amountInLamports <= 0) {
-    throw new Error("Tried transferring a negative or non existing amount")
+    throw new Error("Tried transferring a negative or 0 lamports of SOL")
   }
   try {
+    const connection = getConnection();
 
+    // Send money from "from" wallet and into "to" wallet
+    var transaction = new Transaction().add(
+      SystemProgram.transfer({
+        fromPubkey: from.publicKey,
+        toPubkey: toPublickey,
+        lamports: amountInLamports
+      })
+    );
+
+    // Sign transaction
+    var signature = await sendAndConfirmTransaction(
+      connection,
+      transaction,
+      [from]
+    );
+
+    return signature;
   } catch (e) {
     console.error(e);
-    throw new Error(`Failed transfering ${convertFromLamports(amountInLamports)} SOL from ${from} to ${to}`);
+    throw new Error(`Failed transfering ${convertFromLamports(amountInLamports)} SOL from ${from.publicKey.toBase58()} to ${toPublickey.toBase58()}`);
   }
 }

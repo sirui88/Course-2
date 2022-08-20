@@ -3,15 +3,7 @@ import { Keypair, PublicKey } from "@solana/web3.js";
 let loadedSecret: number[];
 
 function readEnvSecret() {
-  if (!loadedSecret) {
-    let key = process.env.PRIVATE_KEY;
-    if (key) {
-      loadedSecret = Array.from(key, (x) => Number(x));
-    } else {
-      throw new Error("No valid PRIVATE_KEY was found in the .env config");
-    }
-  }
-  return loadedSecret;
+  // No usecase for private key since requirement is to generate one upon button click.
 }
 
 export function createPrivateKey(keys?: number[]): Keypair {
@@ -24,7 +16,7 @@ export function createPrivateKey(keys?: number[]): Keypair {
   }
 }
 
-export function createPublicKeyFromSecret(keys: number[] = readEnvSecret()): PublicKey {
+export function createPublicKeyFromSecret(keys: number[]): PublicKey {
   return createPrivateKey(keys).publicKey;
 }
 
