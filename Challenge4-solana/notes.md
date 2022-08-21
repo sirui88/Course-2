@@ -43,8 +43,8 @@ It should all work till npm run start. Which ofcourse will require you to fill i
 
 
 For the code:
-When we create the greetedPubKey we pass along the programId. This is done to allow this key to write ot the program.
-- This is a bit confusing, does this mean that if I have the ID of a program I can mute it live? Wouldn't that be a huge vurnability to allow people to change it without redeploying?
+When we create the greetedPubKey we pass along the programId. This is done to allow this key to write to the program.
+- This is a bit confusing, does this mean that if I have the ID of a program I can mutate it live? Wouldn't that be a huge vurnability to allow people to change it without redeploying?
 - Isn't it more likely that this would allow the account to interact with the program? Which again doens't quite fit the picutre since by signing an approve you can interact with any program on chain I think?
 
 Resources used to run a program is actually RENT not Gas Fee. getMinimumBalanceForRentException will return rent needed. uses program length to determine this

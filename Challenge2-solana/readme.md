@@ -11,6 +11,7 @@ Question:
 `const connection = new Connection(clusterApiUrl("devnet"), "confirmed");`
 Is it standard to have a connection be like a Singleton and have it stay allive throughout the whole lifespan of an applciation.
 Or should we create a connection whenever we need a connection? For safety I've gone for the latter.
+/\Answered during group call, it is standard to establish connection only once during the lifetime of your application
 
 
 Note to self remember:

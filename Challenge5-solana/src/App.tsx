@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { getProvider, PhantomProvider } from './lib/phantom.provider';
 import { createPrivateKey, createPublicKey } from './lib/keyPairs';
 import { airdropSOL, getSOLBalance, transferSOL } from './lib/wallet';
-import { Keypair, } from '@solana/web3.js';
+import { Keypair } from '@solana/web3.js';
 import { convertToLamports } from './lib/lamport';
 // Magical statement copied from MinG#7128, long may he reign
 // this fixes the `ReferenceError: Buffer is not defined` when transferring SOL
@@ -80,7 +80,6 @@ function App() {
    * Also removes the emptied pub wallet since it's nearly empty now
    */
   async function moveFunds() {
-    console.log("landed");
     try {
       const from = keyPair;
       const to = createPublicKey(connectedWallet);
