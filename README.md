@@ -1,4 +1,4 @@
-# Course-2
+# Mod-2
 Getting Started with Solana using Javascript
 
 Each challenge will contain a file with my thoughts during the challenge. some small some bigger. These files are just notes. I tried to summarize the key points in here
